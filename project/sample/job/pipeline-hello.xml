@@ -1,0 +1,101 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1505.vea_4b_20a_4a_495">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@4043.va_fb_de6a_a_8b_f5">
+    <script>#!/usr/bin/env groovy
+
+pipeline {
+  agent {
+    node {
+      label &apos;jenkins-jenkins-agent&apos;
+      //customWorkspace &apos;/some/other/path&apos;
+    }
+  }
+
+  stages {
+    stage(&apos;hello&apos;) {
+      parallel {
+
+        stage(&apos;echo&apos;) {
+          agent {
+            label &apos;jenkins-jenkins-agent&apos;
+          }
+          steps {
+            sh &apos;&apos;&apos;
+              #!/bin/bash
+              
+              set -e
+              set -x
+              
+              sleep 10
+              echo &quot;hello world&quot;
+              sleep 10
+            &apos;&apos;&apos;
+          }
+          post {
+            always {
+              echo &quot;completed!!!&quot;
+            }
+          }
+        }
+
+        stage(&apos;hostname&apos;) {
+          agent {
+            label &apos;jenkins-jenkins-agent&apos;
+          }
+          steps {
+            sh &apos;&apos;&apos;
+              #!/bin/bash
+              
+              set -e
+              set -x
+              
+              sleep 10
+              hostname
+              sleep 10
+            &apos;&apos;&apos;
+          }
+          post {
+            always {
+              echo &quot;completed!!!&quot;
+            }
+          }
+        }
+
+      }
+    }
+
+    stage(&apos;pwd&apos;) {
+      agent {
+        label &apos;jenkins-jenkins-agent&apos;
+      }
+      steps {
+        sh &apos;&apos;&apos;
+          #!/bin/bash
+          
+          set -e
+          set -x
+          
+          sleep 10
+          pwd
+          sleep 10
+        &apos;&apos;&apos;
+      }
+      post {
+        always {
+          echo &quot;completed!!!&quot;
+        }
+      }
+    }
+
+  }
+}
+</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

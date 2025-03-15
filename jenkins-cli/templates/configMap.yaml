@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-cli-script
+data:
+  jenkins-cli.sh: |
+    #!/bin/sh
+    java -jar /jenkins-cli.jar -s http://jenkins:8080/ "$@"

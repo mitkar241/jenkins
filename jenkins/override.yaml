@@ -1,0 +1,10 @@
+controller:
+  podSecurityContextOverride:
+    runAsUser: 1000
+    # added separately - was not present in values.yaml
+    fsGroup: 1000
+    runAsNonRoot: true
+    supplementalGroups: [1000]
+    capabilities: {}
+persistence:
+  size: "1Gi"

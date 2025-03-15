@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-cli
+spec:
+  volumes:
+    - name: jenkins-cli-volume
+      configMap:
+        name: jenkins-cli-script
+        # This allows read, write, and execute permissions
+        defaultMode: 0777
+  containers:
+  - name: openjdk
+    image: openjdk:17-alpine
+    imagePullPolicy: IfNotPresent
+    env:
+    - name: JENKINS_USER_ID
+      value: "{{ .Values.JENKINS_USER_ID }}"
+    - name: JENKINS_API_TOKEN
+      value: "{{ .Values.JENKINS_API_TOKEN }}"
+    command:
+      - "sh"
+      - "-c"
+      - |
+        /bin/sh <<'EOF'
+        wget http://jenkins:8080/jnlpJars/jenkins-cli.jar
+        sleep infinity
+        EOF
+    volumeMounts:
+      - name: jenkins-cli-volume
+        mountPath: /usr/local/bin/jenkins-cli
+        subPath: jenkins-cli.sh

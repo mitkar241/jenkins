@@ -1,0 +1,167 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1505.vea_4b_20a_4a_495">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2247.va_423189a_7dff"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2247.va_423189a_7dff">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>Description:&#xd;
+Pipeline &quot;hello&quot;&#xd;
+where lots of the configs are set</description>
+  <displayName>pipeline-hello-set display name</displayName>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>7</daysToKeep>
+        <numToKeep>20</numToKeep>
+        <artifactDaysToKeep>7</artifactDaysToKeep>
+        <artifactNumToKeep>20</artifactNumToKeep>
+        <removeLastBuild>true</removeLastBuild>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty>
+      <abortPrevious>true</abortPrevious>
+    </org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableResumeJobProperty/>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.42.0">
+      <projectUrl>https://github.com/mitkar241/jenkins/</projectUrl>
+      <displayName>mitkar241 - jenkins</displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.DurabilityHintJobProperty>
+      <hint>PERFORMANCE_OPTIMIZED</hint>
+    </org.jenkinsci.plugins.workflow.job.properties.DurabilityHintJobProperty>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.properties.PreserveStashesJobProperty plugin="pipeline-model-definition@2.2247.va_423189a_7dff">
+      <buildCount>5</buildCount>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.properties.PreserveStashesJobProperty>
+    <jenkins.branch.RateLimitBranchProperty_-JobPropertyImpl plugin="branch-api@2.1214.v3f652804588d">
+      <durationName>minute</durationName>
+      <count>5</count>
+      <userBoost>true</userBoost>
+    </jenkins.branch.RateLimitBranchProperty_-JobPropertyImpl>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <jenkins.triggers.ReverseBuildTrigger>
+          <spec></spec>
+          <upstreamProjects>pipeline-hello, pipeline-hello-set</upstreamProjects>
+          <threshold>
+            <name>ABORTED</name>
+            <ordinal>4</ordinal>
+            <color>ABORTED</color>
+            <completeBuild>false</completeBuild>
+          </threshold>
+        </jenkins.triggers.ReverseBuildTrigger>
+        <hudson.triggers.TimerTrigger>
+          <spec>H * * * *</spec>
+        </hudson.triggers.TimerTrigger>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.42.0">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+        <hudson.triggers.SCMTrigger>
+          <spec>H * * * *</spec>
+          <ignorePostCommitHooks>true</ignorePostCommitHooks>
+        </hudson.triggers.SCMTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@4043.va_fb_de6a_a_8b_f5">
+    <script>#!/usr/bin/env groovy
+
+pipeline {
+  agent {
+    node {
+      label &apos;jenkins-jenkins-agent&apos;
+      //customWorkspace &apos;/some/other/path&apos;
+    }
+  }
+
+  stages {
+    stage(&apos;hello&apos;) {
+      parallel {
+
+        stage(&apos;echo&apos;) {
+          agent {
+            label &apos;jenkins-jenkins-agent&apos;
+          }
+          steps {
+            sh &apos;&apos;&apos;
+              #!/bin/bash
+              
+              set -e
+              set -x
+              
+              sleep 10
+              echo &quot;hello world&quot;
+              sleep 10
+            &apos;&apos;&apos;
+          }
+          post {
+            always {
+              echo &quot;completed!!!&quot;
+            }
+          }
+        }
+
+        stage(&apos;hostname&apos;) {
+          agent {
+            label &apos;jenkins-jenkins-agent&apos;
+          }
+          steps {
+            sh &apos;&apos;&apos;
+              #!/bin/bash
+              
+              set -e
+              set -x
+              
+              sleep 10
+              hostname
+              sleep 10
+            &apos;&apos;&apos;
+          }
+          post {
+            always {
+              echo &quot;completed!!!&quot;
+            }
+          }
+        }
+
+      }
+    }
+
+    stage(&apos;pwd&apos;) {
+      agent {
+        label &apos;jenkins-jenkins-agent&apos;
+      }
+      steps {
+        sh &apos;&apos;&apos;
+          #!/bin/bash
+          
+          set -e
+          set -x
+          
+          sleep 10
+          pwd
+          sleep 10
+        &apos;&apos;&apos;
+      }
+      post {
+        always {
+          echo &quot;completed!!!&quot;
+        }
+      }
+    }
+
+  }
+}
+</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <quietPeriod>60</quietPeriod>
+  <authToken>ABCDEFGH1234</authToken>
+  <disabled>false</disabled>
+</flow-definition>
