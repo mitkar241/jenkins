@@ -14,6 +14,7 @@ pipeline {
             //echo "Wrong command : " + err.toString()
           } finally {
             /* clean up our workspace */
+            // requires plugin: ws-cleanup
             cleanWs()
             //deleteDir()
           }

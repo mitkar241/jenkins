@@ -30,7 +30,7 @@ pipeline {
   }
   stages {
     stage('Building') {
-      agent { label "build" }
+      agent { label "jenkins-jenkins-agent" }
       environment {
         EXAMPLE_CREDS = credentials("UNAME_PWD_CRED")
       }
@@ -53,7 +53,7 @@ pipeline {
       }
     }
     stage('Testing') {
-      agent { label "test" }
+      agent { label "jenkins-jenkins-agent" }
       environment {
         SSH_CREDS = credentials("SSH_CRED")
         CRED_PWD = "${params.password}"

@@ -6,4 +6,4 @@ set -x
 helm uninstall jenkins || true
 
 kubectl delete -f jenkins/persistentVolume.yaml || true
-rm -rf /tmp/jenkins
+sudo rm -rf /tmp/jenkins

@@ -5,7 +5,7 @@ pipeline {
   stages {
     stage('Non-Sequential Stage') {
       agent {
-        label 'build'
+        label 'jenkins-jenkins-agent'
       }
       steps {
         echo "On Non-Sequential Stage"
@@ -13,10 +13,10 @@ pipeline {
     }
     stage('Sequential') {
       agent {
-        label 'test'
+        label 'jenkins-jenkins-agent'
       }
       environment {
-          FOR_SEQUENTIAL = "some-value"
+        FOR_SEQUENTIAL = "some-value"
       }
       stages {
         stage('In Sequential 1') {

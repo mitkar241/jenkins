@@ -84,4 +84,5 @@ jenkins-endpoint: ## Get Jenkins Endpoint
 	./jenkins/endpoint.sh
 
 admin-password: ## Get Jenkins Admin Password
+	echo "Username: admin"
 	kubectl exec -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/additional/chart-admin-password && echo
